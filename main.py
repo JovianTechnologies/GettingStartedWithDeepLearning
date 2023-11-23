@@ -17,8 +17,28 @@ def test_azure_key():
     resized_image = image.to_thumb(128, 128)
     resized_image.show()
 
+def get_images():
+    bear_types = 'grizzly', 'black', 'teddy'
+    path = Path('bears')
+    if not path.exists():
+        path.mkdir()
+
+    for o in bear_types:
+        dest = (path / o)
+        dest.mkdir(exist_ok=True)
+        results = search_images_bing(azure_key, f'{o} bear')
+        download_images(dest, urls=results.attrgot('contentUrl'))
+
+    fns = get_image_files(path)
+    print(fns)
+
+    # remove any images that can't be opened
+    failed = verify_images(fns)
+    print(failed)
+    failed.map(Path.unlink)
+
 def main():
-    test_azure_key()
+    get_images()
 
 
 if __name__ == "__main__":
