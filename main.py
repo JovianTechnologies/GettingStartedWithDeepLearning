@@ -17,6 +17,12 @@ def test_azure_key():
     resized_image = image.to_thumb(128, 128)
     resized_image.show()
 
+def remove_png_files(path_str):
+    path = Path(path_str)
+    for f in path.ls():
+        if f.suffix == '.png':
+            f.unlink()
+
 def get_images(path_name, types):
     path = Path(path_name)
     if not path.exists():
@@ -36,10 +42,14 @@ def get_images(path_name, types):
     print(failed)
     failed.map(Path.unlink)
 
+
 def main():
     mushroom_types = 'jack o\' lantern', 'chanterelle'
 
-    get_images('images', mushroom_types)
+    # get_images('images', mushroom_types)
+    #rempve any png files since they can have transparency
+    remove_png_files('images/chanterelle')
+    remove_png_files('images/jack o\' lantern')
 
 
 if __name__ == "__main__":
