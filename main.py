@@ -1,5 +1,7 @@
 import fastbook
+from fastai.vision.widgets import ImageClassifierCleaner
 from fastbook import *
+import matplotlib.pyplot as pl
 
 azure_key = os.environ.get('AZURE_SEARCH_KEY', 'ef46f0c9d255472b95608666b8288a34')
 
@@ -52,18 +54,23 @@ def train_model(path):
 
     dls = mushrooms.dataloaders(path, num_workers=0) # num_workers=0 to avoid a warning on windows
 
-    learn = cnn_learner(dls, resnet18, metrics=error_rate)
+    learn = vision_learner(dls, resnet18, metrics=error_rate)
     learn.fine_tune(4)
 
-    interp = ClassificationInterpretation.from_learner(learn)
+    return learn
+
+
+
+def examine_model(model):
+    interp = ClassificationInterpretation.from_learner(model)
     interp.plot_confusion_matrix()
 
     time.sleep(10)
 
-    # interp.plot_top_losses(5, nrows=1)
-    #
-    # cleaner = ImageClassifierCleaner(learn)
-    # cleaner
+    interp.plot_top_losses(5, nrows=1)
+
+    cleaner = ImageClassifierCleaner(model)
+    cleaner
     #
     # for idx in cleaner.delete(): cleaner.fns[idx].unlink()
     # for idx, cat in cleaner.change(): shutil.move(str(cleaner.fns[idx]), path / cat)
@@ -73,7 +80,9 @@ def train_model(path):
 def main():
     # mushroom_types = 'jack o\' lantern', 'chanterelle'
     # get_images('images/mushroom', mushroom_types)
-    train_model('images/mushroom')
+    model = train_model('images')
+    examine_model(model)
+
 
 if __name__ == "__main__":
     main()
