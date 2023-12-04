@@ -80,6 +80,9 @@ def examine_model(model):
 def main():
     # mushroom_types = 'jack o\' lantern', 'chanterelle'
     # get_images('images/mushroom', mushroom_types)
+    # remove_png_files('images/chanterelle')
+    # remove_png_files('images/jack o\' lantern')
+
     model = train_model('images')
     examine_model(model)
 
