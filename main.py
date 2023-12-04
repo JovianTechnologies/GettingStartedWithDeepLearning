@@ -46,7 +46,7 @@ def get_images(path_name, types):
 def main():
     mushroom_types = 'jack o\' lantern', 'chanterelle'
 
-    # get_images('images', mushroom_types)
+    get_images('images', mushroom_types)
     #rempve any png files since they can have transparency
     remove_png_files('images/chanterelle')
     remove_png_files('images/jack o\' lantern')
