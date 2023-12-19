@@ -3,5 +3,4 @@ torchvision
 fastai
 fastbook
 python-dotenv
-```
 matplotlib
