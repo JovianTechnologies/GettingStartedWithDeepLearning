@@ -62,11 +62,12 @@ def train_model(path):
 
 def examine_model(model):
     interp = ClassificationInterpretation.from_learner(model)
-    interp.plot_confusion_matrix()
 
-    time.sleep(10)
+    interp.plot_confusion_matrix()
+    plt.show()
 
     interp.plot_top_losses(5, nrows=1)
+    plt.show()
 
 
 
