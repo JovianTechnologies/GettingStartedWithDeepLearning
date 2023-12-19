@@ -1,8 +1,10 @@
+from dotenv import load_dotenv
 import fastbook
 from fastai.vision.widgets import ImageClassifierCleaner
 from fastbook import *
 import matplotlib.pyplot as pl
 
+load_dotenv()
 azure_key = os.environ.get('AZURE_KEY')
 
 def test_azure_key():
@@ -69,8 +71,8 @@ def examine_model(model):
 
 
 def main():
-    # mushroom_types = 'jack o\' lantern', 'chanterelle'
-    # get_images('images/mushroom', mushroom_types)
+    mushroom_types = {'Omphalotus olearius'}
+    get_images('images', mushroom_types)
     # remove_png_files('images/chanterelle')
     # remove_png_files('images/jack o\' lantern')
 
