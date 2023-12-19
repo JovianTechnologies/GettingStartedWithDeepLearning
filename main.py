@@ -1,8 +1,10 @@
+from dotenv import load_dotenv
 import fastbook
 from fastai.vision.widgets import ImageClassifierCleaner
 from fastbook import *
 import matplotlib.pyplot as pl
 
+load_dotenv()
 azure_key = os.environ.get('AZURE_KEY')
 
 def test_azure_key():
