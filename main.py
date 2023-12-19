@@ -3,16 +3,16 @@ from fastai.vision.widgets import ImageClassifierCleaner
 from fastbook import *
 import matplotlib.pyplot as pl
 
-azure_key = os.environ.get('AZURE_SEARCH_KEY', 'ef46f0c9d255472b95608666b8288a34')
+azure_key = os.environ.get('AZURE_KEY')
 
 def test_azure_key():
-    results = search_images_bing(azure_key, 'grizzly bear')
+    results = search_images_bing(azure_key, 'mushroom')
     ims = results.attrgot('contentUrl')
 
     # print length of results to console
     print(len(ims))
 
-    d = 'grizzly.jpg'
+    d = 'mushroom.jpg'
     download_url(ims[0], d)
     image = Image.open(d)
     resized_image = image.to_thumb(128, 128)
@@ -45,9 +45,6 @@ def train_model(path):
         get_y=parent_label,
         item_tfms=Resize(128))
 
-    dls = mushrooms.dataloaders(path)
-
-
     mushrooms = mushrooms.new(
         item_tfms=RandomResizedCrop(224, min_scale=0.5),
         batch_tfms=aug_transforms())
@@ -68,12 +65,6 @@ def examine_model(model):
     time.sleep(10)
 
     interp.plot_top_losses(5, nrows=1)
-
-    cleaner = ImageClassifierCleaner(model)
-    cleaner
-    #
-    # for idx in cleaner.delete(): cleaner.fns[idx].unlink()
-    # for idx, cat in cleaner.change(): shutil.move(str(cleaner.fns[idx]), path / cat)
 
 
 
