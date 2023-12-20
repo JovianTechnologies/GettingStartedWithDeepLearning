@@ -5,7 +5,7 @@ from fastai.vision.widgets import *
 
 load_dotenv()
 azure_key = os.environ.get('AZURE_KEY')
-print(azure_key)
+
 def test_azure_key():
     results = search_images_bing(azure_key, 'mushroom')
     ims = results.attrgot('contentUrl')
