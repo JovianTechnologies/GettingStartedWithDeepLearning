@@ -3,5 +3,9 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.10 (getting_started_in_deep_learning)" />
   </component>
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" project-jdk-name="pytorch-env" project-jdk-type="Python SDK" />
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="pytorch-env (2)" project-jdk-type="Python SDK" />
+>>>>>>> step1
 </project>
