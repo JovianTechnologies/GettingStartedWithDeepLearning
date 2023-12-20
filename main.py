@@ -7,7 +7,7 @@ load_dotenv()
 azure_key = os.environ.get('AZURE_KEY')
 
 def test_azure_key():
-    results = search_images_bing(azure_key, 'mushroom')
+    results = search_images_bing(azure_key, 'mushroom', max_images=1)
     ims = results.attrgot('contentUrl')
 
     # print length of results to console
