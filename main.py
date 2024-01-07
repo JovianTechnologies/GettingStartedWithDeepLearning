@@ -20,6 +20,12 @@ def test_azure_key():
     resized_image = image.to_thumb(128, 128)
     resized_image.show()
 
+def remove_png_files(path_str):
+    path = Path(path_str)
+    for f in path.ls():
+        if f.suffix == '.png':
+            f.unlink()
+
 def get_images(path_name, types):
     path = Path(path_name)
     if not path.exists():
@@ -45,11 +51,9 @@ def train_model(path):
         get_items=get_image_files,
         splitter=RandomSplitter(valid_pct=0.2, seed=42),
         get_y=parent_label,
-        item_tfms=Resize(128))
-
-    mushrooms = mushrooms.new(
         item_tfms=RandomResizedCrop(224, min_scale=0.5),
-        batch_tfms=aug_transforms())
+        batch_tfms=aug_transforms()
+    )
 
     dls = mushrooms.dataloaders(path, num_workers=0) # num_workers=0 to avoid a warning on windows
 
@@ -57,8 +61,6 @@ def train_model(path):
     learn.fine_tune(4)
 
     return learn
-
-
 
 def examine_model(model):
     interp = ClassificationInterpretation.from_learner(model)
@@ -73,7 +75,7 @@ def examine_model(model):
 
 def main():
     # mushroom_types = 'jack o\' lantern', 'chanterelle'
-    # get_images('images/mushroom', mushroom_types)
+    # get_images('images/', mushroom_types)
     # remove_png_files('images/chanterelle')
     # remove_png_files('images/jack o\' lantern')
 
