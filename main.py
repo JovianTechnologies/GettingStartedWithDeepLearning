@@ -26,15 +26,27 @@ def remove_png_files(path_str):
         if f.suffix == '.png':
             f.unlink()
 
+def search_images_bing(key, term, min_sz=128, max_images=150, offset=0):
+    params = dict(q=term, count=max_images, min_height=min_sz, min_width=min_sz, offset=offset)
+    search_url = "https://api.bing.microsoft.com/v7.0/images/search"
+    response = requests.get(search_url, headers={"Ocp-Apim-Subscription-Key":key}, params=params)
+    response.raise_for_status()
+    return L(response.json()['value'])
+
 def get_images(path_name, types):
     path = Path(path_name)
     if not path.exists():
         path.mkdir()
 
+    nOffsets = 3
     for o in types:
         dest = (path / o)
         dest.mkdir(exist_ok=True)
-        results = search_images_bing(azure_key, f'{o} {path_name}s')
+        results = []
+        for offset in range(nOffsets):
+            print(f'{o} offset: {offset}')
+            results += search_images_bing(azure_key, f'{o} {path_name}s', max_images=150, offset=offset)
+
         download_images(dest, urls=results.attrgot('contentUrl'))
 
     fns = get_image_files(path)
@@ -75,22 +87,22 @@ def examine_model(model):
 
 def main():
     mushroom_types = {'Omphalotus olearius'}
-    # mushroom_types = 'jack o\' lantern', 'chanterelle'
-    get_images('images/', mushroom_types)
+    mushroom_types = 'Omphalotus olearius', 'chanterelle'
+    # get_images('images/', mushroom_types)
 
-    # remove_png_files('images/chanterelle')
+    remove_png_files('images/chanterelle')
     # remove_png_files('images/jack o\' lantern')
     remove_png_files('images/Omphalotus olearius')
 
-    jack_o_lantern_path = Path('images/jack o\' lantern')
-    try:
-        for f in jack_o_lantern_path.ls():
-            f.unlink()
-
-        os.rmdir(jack_o_lantern_path)
-        print(f"The directory {jack_o_lantern_path} has been deleted.")
-    except OSError as e:
-        print(f"Error: {e.strerror}")
+    # jack_o_lantern_path = Path('images/jack o\' lantern')
+    # try:
+    #     for f in jack_o_lantern_path.ls():
+    #         f.unlink()
+    #
+    #     os.rmdir(jack_o_lantern_path)
+    #     print(f"The directory {jack_o_lantern_path} has been deleted.")
+    # except OSError as e:
+    #     print(f"Error: {e.strerror}")
 
     model = train_model('images')
     examine_model(model)
