@@ -104,9 +104,9 @@ def main():
     # mushroom_types = 'Omphalotus olearius', 'chanterelle'
     # get_images('images/', mushroom_types)
 
-    remove_png_files('images/chanterelle')
+    # remove_png_files('images/chanterelle')
     # remove_png_files('images/jack o\' lantern')
-    remove_png_files('images/Omphalotus olearius')
+    # remove_png_files('images/Omphalotus olearius')
 
     remove_image_duplicates('images/chanterelle')
     remove_image_duplicates('images/jack o\' lantern')
