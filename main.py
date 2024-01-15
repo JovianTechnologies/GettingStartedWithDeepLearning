@@ -1,8 +1,5 @@
 from dotenv import load_dotenv
-import fastbook
-from fastai.vision.widgets import ImageClassifierCleaner
 from fastbook import *
-import matplotlib.pyplot as pl
 
 load_dotenv()
 azure_key = os.environ.get('AZURE_KEY')
@@ -32,6 +29,23 @@ def search_images_bing(key, term, min_sz=128, max_images=150, offset=0):
     response = requests.get(search_url, headers={"Ocp-Apim-Subscription-Key":key}, params=params)
     response.raise_for_status()
     return L(response.json()['value'])
+
+def image_hash(image_path):
+    with Image.open(image_path) as img:
+        return hashlib.md5(img.tobytes()).hexdigest()
+
+def remove_image_duplicates(dir_path):
+    unique = {}
+    for filename in os.listdir(dir_path):
+        file_path = os.path.join(dir_path, filename)
+        if os.path.isfile(file_path):
+            img_hash = image_hash(file_path)
+            if img_hash not in unique:
+                unique[img_hash] = filename
+            else:
+                print(f"Removing duplicate image: {filename}")
+                os.remove(file_path)
+    return unique
 
 def get_images(path_name, types):
     path = Path(path_name)
@@ -86,14 +100,16 @@ def examine_model(model):
 
 
 def main():
-    mushroom_types = {'Omphalotus olearius'}
-    mushroom_types = 'Omphalotus olearius', 'chanterelle'
+    # mushroom_types = {'Omphalotus olearius'}
+    # mushroom_types = 'Omphalotus olearius', 'chanterelle'
     # get_images('images/', mushroom_types)
 
     remove_png_files('images/chanterelle')
     # remove_png_files('images/jack o\' lantern')
     remove_png_files('images/Omphalotus olearius')
 
+    remove_image_duplicates('images/chanterelle')
+    remove_image_duplicates('images/jack o\' lantern')
     # jack_o_lantern_path = Path('images/jack o\' lantern')
     # try:
     #     for f in jack_o_lantern_path.ls():
