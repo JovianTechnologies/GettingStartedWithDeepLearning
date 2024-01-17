@@ -82,9 +82,8 @@ def train_model(path):
     )
 
     dls = mushrooms.dataloaders(path, num_workers=0) # num_workers=0 to avoid a warning on windows
-
     learn = vision_learner(dls, resnet18, metrics=error_rate)
-    learn.fine_tune(4)
+    learn.fine_tune(7)
 
     return learn
 
@@ -98,7 +97,6 @@ def examine_model(model):
     plt.show()
 
 
-
 def main():
     # mushroom_types = {'Omphalotus olearius'}
     # mushroom_types = 'Omphalotus olearius', 'chanterelle'
@@ -108,8 +106,8 @@ def main():
     # remove_png_files('images/jack o\' lantern')
     # remove_png_files('images/Omphalotus olearius')
 
-    remove_image_duplicates('images/chanterelle')
-    remove_image_duplicates('images/jack o\' lantern')
+    # remove_image_duplicates('images/chanterelle')
+    # remove_image_duplicates('images/Omphalotus olearius')
     # jack_o_lantern_path = Path('images/jack o\' lantern')
     # try:
     #     for f in jack_o_lantern_path.ls():
@@ -122,6 +120,7 @@ def main():
 
     model = train_model('images')
     examine_model(model)
+    model.export(f'mushroom_classifier.pkl')
 
 
 if __name__ == "__main__":
