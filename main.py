@@ -109,7 +109,7 @@ def main():
     # remove_png_files('images/Omphalotus olearius')
 
     remove_image_duplicates('images/chanterelle')
-    remove_image_duplicates('images/jack o\' lantern')
+    remove_image_duplicates('images/Omphalotus olearius')
     # jack_o_lantern_path = Path('images/jack o\' lantern')
     # try:
     #     for f in jack_o_lantern_path.ls():
