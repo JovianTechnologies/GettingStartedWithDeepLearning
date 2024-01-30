@@ -4,3 +4,4 @@ fastai
 fastbook
 python-dotenv
 matplotlib
+gradio

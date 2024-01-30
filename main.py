@@ -96,6 +96,11 @@ def examine_model(model):
     interp.plot_top_losses(5, nrows=1)
     plt.show()
 
+def predict_image(model_path, image):
+    image = PILImage.create(image).to_thumb(224, 224)
+    model = load_learner(model_path)
+    pred, pred_idx, probs = model.predict(image)
+    return f'{probs[pred_idx]*100:.02f}% sure this is a {pred}'
 
 def main():
     # mushroom_types = {'Omphalotus olearius'}
